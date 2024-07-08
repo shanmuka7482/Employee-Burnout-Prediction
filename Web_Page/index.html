@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burnout Prediction</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="form">
+      <form id="myForm">
+        <h1>Employee Burnout Prediction:</h1>
+        <table style="width: 100%">
+          <tr>
+            <td><label for="Gender">Gender:</label></td>
+            <td>
+              <input list="Genders" name="Gender" id="Gender" required />
+              <datalist id="Genders">
+                <option value="Male"></option>
+                <option value="Female"></option></datalist
+              ><br /><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="Company">Company:</label></td>
+            <td>
+              <input list="Companys" name="Company" id="Company" required />
+              <datalist id="Companys">
+                <option value="Service"></option>
+                <option value="Product"></option></datalist
+              ><br /><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="WFH">Work From Home:</label></td>
+            <td>
+              <input list="WFHs" name="WFH" id="WFH" required />
+              <datalist id="WFHs">
+                <option value="Yes"></option>
+                <option value="No"></option></datalist
+              ><br /><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="Designation">Designation:</label></td>
+            <td>
+              <input
+                type="number"
+                id="Designation"
+                min="0"
+                max="5"
+                required
+                name="Designation"
+              /><br /><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="Resource_Allocation">Resource Allocation:</label>
+            </td>
+            <td>
+              <input
+                type="number"
+                id="Resource_Allocation"
+                required
+                name="Resource_Allocation"
+                min="1"
+                max="10"
+              /><br /><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="Mental_Fatigue_Score">Mental Fatigue Score:</label>
+            </td>
+            <td>
+              <input
+                type="number"
+                id="Mental_Fatigue_Score"
+                name="Mental_Fatigue_Score"
+                required
+                min="0"
+                max="10"
+              /><br /><br />
+            </td>
+          </tr>
+        </table>
+        <div class="submit">
+          <input type="submit" value="Burn Rate Prediction" onclick="" />
+        </div>
+        <h2 id="ans">Ans:</h2>
+      </form>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>

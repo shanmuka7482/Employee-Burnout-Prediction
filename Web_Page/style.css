@@ -1,0 +1,48 @@
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+body {
+  background-color: #393e46;
+}
+* {
+  font-family: "Lobster", cursive;
+}
+h1,
+#ans {
+  text-shadow: 5px 0 #232931;
+}
+h1,
+label,
+h2 {
+  color: #4ecca3;
+  letter-spacing: 0.6px;
+}
+input {
+  background-color: #900d09;
+  color: rgb(224, 213, 213);
+  border: 1px solid rgb(201, 197, 197);
+  border-radius: 5px;
+  font-weight: bolder;
+  margin-left: 100px;
+  width: 180px;
+}
+label {
+  font-size: larger;
+}
+.submit {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+.submit > input {
+  margin-left: 160px;
+  font-size: 16.5px;
+}
+h1 {
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 40px;
+}
