@@ -63,22 +63,22 @@ WFHInput.addEventListener("change", function () {
   }
 });
 
-$(document).ready(function() {
-  $('#myForm').on('submit', function(event) {
-      event.preventDefault();
+$(document).ready(function () {
+  $("#myForm").on("submit", function (event) {
+    event.preventDefault();
 
-      var formData = $(this).serialize();
-      console.log(formData);
-      $.ajax({
-          type: 'POST',
-          url: 'https://employee-burnout-prediction-backend.onrender.com/submit',
-          data: formData,
-          success: function(response) {
-              $('#ans').html('<h2>Ans: ' + response + '%</h2>');
-          },
-          error: function(error) {
-              console.error('Error:', error);
-          }
-      });
+    var formData = $(this).serialize();
+    console.log(formData);
+    $.ajax({
+      type: "POST",
+      url: "https://employee-burnout-prediction-backend.onrender.com/submit",
+      data: formData,
+      success: function (response) {
+        $("#ans").html("<h2>Ans: " + response + "%</h2>");
+      },
+      error: function (error) {
+        console.error("Error:", error);
+      },
+    });
   });
 });
