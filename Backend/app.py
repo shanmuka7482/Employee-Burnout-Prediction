@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 
 app = Flask(__name__)
-CORS(app,resources={r"/*":{"origins":"http://127.0.0.1:3000"}})  # This will allow all origins by default
+CORS(app, origins=["https://employee-burnout-prediction.onrender.com"])  # This will allow all origins by default
 
 # Load the model and scaler once when the application starts
 linear_regression_model = joblib.load('Burnout_prediction_model.pkl')
