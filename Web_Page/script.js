@@ -67,18 +67,28 @@ $(document).ready(function () {
   $("#myForm").on("submit", function (event) {
     event.preventDefault();
 
-    var formData = $(this).serialize();
-    console.log(formData);
+    // Convert form data to JSON
+    var formData = $(this).serializeArray();
+    var dataObject = {};
+    $.each(formData, function (i, field) {
+      dataObject[field.name] = field.value;
+    });
+
+    console.log(dataObject);
+
     $.ajax({
       type: "POST",
       url: "https://employee-burnout-prediction-backend.onrender.com/submit",
-      data: formData,
+      contentType: "application/json",
+      data: JSON.stringify(dataObject),
       success: function (response) {
         $("#ans").html("<h2>Ans: " + response + "%</h2>");
       },
-      error: function (error) {
+      error: function (xhr, status, error) {
         console.error("Error:", error);
+        $("#ans").html("<h2>Error occurred. Please check the console for details.</h2>");
       },
     });
   });
 });
+
