@@ -3,11 +3,12 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 
 app = Flask(__name__)
-CORS(app)  # This will allow all origins by default
+CORS(app,resources={r"/*":{"origins":"http://127.0.0.1:3000"}})  # This will allow all origins by default
 
-# Load the model once when the application starts
+# Load the model and scaler once when the application starts
 linear_regression_model = joblib.load('Burnout_prediction_model.pkl')
 
 @app.route('/submit', methods=['POST'])
@@ -16,10 +17,11 @@ def submit():
     Gender = request.form['Gender']
     Company = request.form['Company']
     WFH = request.form['WFH']
-    Designation = request.form['Designation']
-    Resource_Allocation = request.form['Resource_Allocation']
-    Mental_Fatigue_Score = request.form['Mental_Fatigue_Score']
+    Designation = float(request.form['Designation'])
+    Resource_Allocation = float(request.form['Resource_Allocation'])
+    Mental_Fatigue_Score = float(request.form['Mental_Fatigue_Score'])
 
+    # Create a DataFrame from the form data
     Personal_test = {
         'Gender': [Gender],
         'Company Type': [Company],
@@ -28,28 +30,39 @@ def submit():
         'Resource Allocation': [Resource_Allocation],
         'Mental Fatigue Score': [Mental_Fatigue_Score],
     }
-
-    Personal_data = pd.DataFrame(data=Personal_test)
-
-    # Check if the columns exist before applying get_dummies
-    if all(col in Personal_data.columns for col in ['Company Type', 'WFH Setup Available', 'Gender']):
-        Personal_data = pd.get_dummies(Personal_data, columns=['Company Type', 'WFH Setup Available', 'Gender'])
-        encoded_columns = Personal_data.columns
+    personal_test_df = pd.DataFrame(Personal_test)
+        # Check if the columns exist before applying get_dummies
+    if all(col in personal_test_df.columns for col in ['Company Type', 'WFH Setup Available', 'Gender']):
+        personal_test_df = pd.get_dummies(personal_test_df, columns=['Company Type', 'WFH Setup Available', 'Gender'], dtype=int)
     else:
-        return jsonify({'error': 'One or more columns are missing in the DataFrame'}), 400
+        print("Error: One or more of the specified columns are not present in the DataFrame.")
+        print(personal_test_df.columns)
 
-    # Ensure all required columns are present
-    required_columns = linear_regression_model.feature_names_in_
-    for col in required_columns:
-        if col not in Personal_data.columns:
-            Personal_data[col] = 0
+    # Multiply specified columns by 2 and create a new column with the sum values
+    columns_to_sum = ['Designation', 'Resource Allocation', 'Mental Fatigue Score',
+                    'Company Type_Service', 'WFH Setup Available_Yes', 'Gender_Male']
+    personal_test_df['Sum_Column'] = personal_test_df[columns_to_sum].apply(lambda x: x * 2).sum(axis=1)
 
-    Personal_data = Personal_data[required_columns]
+    # Feature Engineering: Interaction and Polynomial Features
+    poly = PolynomialFeatures(degree=2, interaction_only=True, include_bias=False)
+    poly_features = poly.fit_transform(personal_test_df[columns_to_sum])
+    poly_features_df = pd.DataFrame(poly_features, columns=poly.get_feature_names_out(columns_to_sum))
+    personal_test_df = pd.concat([personal_test_df, poly_features_df], axis=1)
+    
+    # Drop the duplicate column by index
+    personal_test_df = personal_test_df.loc[:, ~personal_test_df.columns.duplicated()]
 
-    # Make predictions
-    y_personal_data = linear_regression_model.predict(Personal_data)
+    # Remove columns which has less correlation
+    personal_test_df = personal_test_df.drop([ 
+        'WFH Setup Available_Yes','Designation Mental Fatigue Score','Designation Gender_Male',
+                                  'Resource Allocation Mental Fatigue Score','Resource Allocation Gender_Male',
+                                  'Mental Fatigue Score Company Type_Service','Mental Fatigue Score Gender_Male','Company Type_Service Gender_Male',
+                                  'WFH Setup Available_Yes Gender_Male'
+       ], axis=1)
 
-    return jsonify(y_personal_data[0].tolist())
+    # Perdict the values with model
+    predicted_value=linear_regression_model.predict(personal_test_df)
+    return jsonify(predicted_value.tolist())
 
 if __name__ == '__main__':
     app.run(debug=True)

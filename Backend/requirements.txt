@@ -55,6 +55,7 @@ jupyterlab_pygments==0.3.0
 jupyterlab_server==2.27.2
 jupyterlab_widgets==3.0.11
 kiwisolver==1.4.5
+lxml==5.2.2
 MarkupSafe==2.1.5
 matplotlib==3.9.0
 matplotlib-inline==0.1.7
@@ -83,7 +84,10 @@ Pygments==2.18.0
 pyparsing==3.1.2
 python-dateutil==2.9.0.post0
 python-json-logger==2.0.7
+python-pptx==0.6.23
 pytz==2024.1
+pywin32==306
+pywinpty==2.0.13
 PyYAML==6.0.1
 pyzmq==26.0.3
 referencing==0.35.1
@@ -113,3 +117,4 @@ webencodings==0.5.1
 websocket-client==1.8.0
 Werkzeug==3.0.3
 widgetsnbextension==4.0.11
+XlsxWriter==3.2.0
