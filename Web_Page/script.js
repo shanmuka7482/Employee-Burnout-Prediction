@@ -62,7 +62,6 @@ WFHInput.addEventListener("change", function () {
     WFHInput.value = "";
   }
 });
-
 $(document).ready(function () {
   $("#myForm").on("submit", function (event) {
     event.preventDefault();
@@ -79,7 +78,9 @@ $(document).ready(function () {
     $.ajax({
       type: "POST",
       url: "https://employee-burnout-prediction-backend.onrender.com/submit",
-      data: formData,
+      data: JSON.stringify(dataObject),
+      contentType: "application/json; charset=utf-8",  // Set Content-Type to application/json
+      dataType: "json",
       success: function (response) {
         $("#ans").html("<h2>Ans: " + response + "%</h2>");
       },
@@ -90,4 +91,3 @@ $(document).ready(function () {
     });
   });
 });
-
