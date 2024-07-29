@@ -78,9 +78,8 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "https://employee-burnout-prediction-backend.onrender.com/submit",
-      contentType: "application/json",
-      data: JSON.stringify(dataObject),
+      url: "http://127.0.0.1:5000/submit",
+      data: formData,
       success: function (response) {
         $("#ans").html("<h2>Ans: " + response + "%</h2>");
       },
