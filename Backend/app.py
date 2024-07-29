@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, OneHotEncoder
 
 app = Flask(__name__)
-CORS(app, origins=["https://employee-burnout-prediction.onrender.com"])  # Allow requests from your frontend
+CORS(app)  # Allow requests from your frontend
 
 # Load the model once when the application starts
 linear_regression_model = joblib.load('Burnout_prediction_model.pkl')
